@@ -1,17 +1,22 @@
 
 import './Header.css';
-import {useHistory, useLocation} from "react-router-dom";
 import {usePages} from "../../hooks/usePages";
 
 
 export default  () => {
 
-  let history = useHistory();
-  const {isRecipePage} = usePages();
+  const {isRecipePage, goToRecipeList} = usePages();
+  const searchHandler = e => {
+    if (e.key === 'Enter') {
+      const search = e.target.value;
+      goToRecipeList(search);
+    }
+  }
   return (<div className="Header">
 
-    {isRecipePage && (<span className="GoBack" onClick={history.goBack}>
+    {isRecipePage && (<span className="GoBack" onClick={goToRecipeList}>
       Back
     </span>)}
+    <input type="text" onKeyPress={searchHandler}/>
   </div>)
 }
