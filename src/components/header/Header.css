@@ -1,0 +1,7 @@
+.Header {
+    background: #c9f4ff;
+    min-height: 32px;
+}
+.GoBack {
+    cursor: pointer;
+}
