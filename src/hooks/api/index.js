@@ -10,22 +10,43 @@ const options = {
 
 export const useGet = (url) => {
   const [response, setResponse] = useState();
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(true);
+  const [forceRerender, setForceRerender] = useState(0);
+
   useEffect(() => {
+    setLoading(true);
     fetch(hostname + url, {
       method: 'GET',
       ...options,
     }).then(response => response.json())
       .then(response => {
         setResponse(response);
-      })
-  }, [url]);
-  return response;
+        setLoading(false);
+      }).catch(err => {
+        setError(err);
+        setLoading(false);
+    })
+  }, [url, forceRerender]);
+  const refresh = () => {
+    setForceRerender(forceRerender + 1);
+  };
+  return {
+    response,
+    error,
+    loading,
+    refresh,
+  };
 }
 
-export const useRecipeList = (keywords) => {
+export const useRecipeList = (listParams) => {
   let url = '/recipes';
-  if (keywords) {
-    url = url + '?keywords=' + keywords;
+  const params = Object.keys(listParams)
+    .filter(key => listParams[key] !== undefined)
+    .reduce((prev,next) => ({...prev,[next]:listParams[next]}), {});
+  const queryString = new URLSearchParams(params).toString();
+  if (queryString) {
+    url = url + '?' + queryString;
   }
   return useGet(url);
 }
