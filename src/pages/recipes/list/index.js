@@ -22,7 +22,7 @@ const parseQueryString = (queryString) => {
 export default  () =>{
   const location = useLocation();
   const queryString = parseQueryString(location.search);
-  const recipes = useRecipeList();
+  const recipes = useRecipeList(queryString.search);
   if (!recipes) {
     return <div>Loading...</div>;
   }

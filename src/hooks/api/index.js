@@ -22,7 +22,13 @@ export const useGet = (url) => {
   return response;
 }
 
-export const useRecipeList = () => useGet('/recipes');
+export const useRecipeList = (keywords) => {
+  let url = '/recipes';
+  if (keywords) {
+    url = url + '?keywords=' + keywords;
+  }
+  return useGet(url);
+}
 export const useRecipe = (id) => useGet('/recipes/' + id);
 
 export const useUpdateRecipeHandler = (id) => {

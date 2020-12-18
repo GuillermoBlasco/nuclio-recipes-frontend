@@ -14,7 +14,7 @@ export default  () => {
   }
   return (<div className="Header">
 
-    {isRecipePage && (<span className="GoBack" onClick={goToRecipeList}>
+    {isRecipePage && (<span className="GoBack" onClick={e => goToRecipeList()}>
       Back
     </span>)}
     <input type="text" onKeyPress={searchHandler}/>
