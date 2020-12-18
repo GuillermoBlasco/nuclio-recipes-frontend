@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useReducer, useState} from "react";
 
 const hostname = 'http://localhost:8000';
 const options = {
@@ -7,34 +7,37 @@ const options = {
     'Accepts': 'application/json',
   }
 }
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'request-start':
+      return {...state, loading: true, error: undefined, response: undefined}
+    case 'request-end':
+      return {...state, loading:false, error: action.error, response: action.response}
+  }
+  return state;
+};
 
 export const useGet = (url) => {
-  const [response, setResponse] = useState();
-  const [error, setError] = useState();
-  const [loading, setLoading] = useState(true);
+  const [state, dispatch] = useReducer(reducer, {loading: true});
   const [forceRerender, setForceRerender] = useState(0);
 
   useEffect(() => {
-    setLoading(true);
+    dispatch({type: 'request-start'});
     fetch(hostname + url, {
       method: 'GET',
       ...options,
     }).then(response => response.json())
       .then(response => {
-        setResponse(response);
-        setLoading(false);
-      }).catch(err => {
-        setError(err);
-        setLoading(false);
+        dispatch({type: 'request-end', response });
+      }).catch(error => {
+        dispatch({type: 'request-end', error });
     })
   }, [url, forceRerender]);
   const refresh = () => {
     setForceRerender(forceRerender + 1);
   };
   return {
-    response,
-    error,
-    loading,
+    ...state,
     refresh,
   };
 }
