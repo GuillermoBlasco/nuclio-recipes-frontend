@@ -10,7 +10,8 @@ import {
 } from "react-router-dom";
 import Header from "./components/header/Header";
 import RecipesNew from "./pages/recipes/new/RecipesNew";
-import {recipeList, recipeNew, recipeOf} from "./constants/urls";
+import {editRecipeOf, recipeList, recipeNew, recipeOf} from "./constants/urls";
+import RecipeEdit from "./pages/recipes/edit/RecipeEdit";
 
 function App() {
   return (
@@ -18,6 +19,10 @@ function App() {
       <Router>
         <Header />
         <Switch>
+          <Route path={editRecipeOf(":id")}>
+            Edit!
+            <RecipeEdit />
+          </Route>
           <Route path={recipeNew}>
             <RecipesNew />
           </Route>

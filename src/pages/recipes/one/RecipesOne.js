@@ -1,9 +1,11 @@
 import {
+  Link,
   useParams
 } from "react-router-dom";
 import {useDeleteRecipeHandler, useRecipe} from "../../../hooks/api";
 import './RecipesOne.css'
 import {usePages} from "../../../hooks/usePages";
+import {editRecipeOf} from "../../../constants/urls";
 export default  () =>{
   const {id} = useParams();
   const {goToRecipeList} = usePages();
@@ -24,6 +26,9 @@ export default  () =>{
       </div>
       <img src={recipe.photo} />
       <button onClick={handleDelete} disabled={loading}>Delete</button>
+      <Link to={editRecipeOf(id)}>
+        <button>Edit</button>
+      </Link>
     </div>
   )
 }

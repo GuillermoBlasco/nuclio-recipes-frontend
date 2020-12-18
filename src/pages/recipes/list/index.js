@@ -13,6 +13,9 @@ const RecipeListItem = (props) => {
   </div>)
 }
 const parseQueryString = (queryString) => {
+  if (!queryString) {
+    return {};
+  }
   var search = queryString.substring(1);
   return JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
 }

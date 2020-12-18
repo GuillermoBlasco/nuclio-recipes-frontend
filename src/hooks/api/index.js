@@ -25,6 +25,25 @@ export const useGet = (url) => {
 export const useRecipeList = () => useGet('/recipes');
 export const useRecipe = (id) => useGet('/recipes/' + id);
 
+export const useUpdateRecipeHandler = (id) => {
+  const [loading, setLoading] = useState(false);
+  return {
+    handler: (body) => {
+      setLoading(true);
+      return fetch(hostname + '/recipes/' + id, {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        ...options,
+      }).then(response => response.json())
+        .then(response => {
+          setLoading(false);
+          return response;
+        })
+    },
+    loading,
+  }
+}
+
 export const useCreateRecipeHandler = () => {
   const [loading, setLoading] = useState(false);
   return {
